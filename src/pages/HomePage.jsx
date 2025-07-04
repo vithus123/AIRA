@@ -610,7 +610,7 @@ const HomePage = () => {
       </div>
 
       {/* Smart Chatbot */}
-      <ChatBot />
+      
     </div>
   );
 };

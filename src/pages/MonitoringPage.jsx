@@ -308,37 +308,6 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Chatbot */}
-        {showChatbot && (
-          <div className="fixed bottom-6 right-6 w-80 h-96 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50">
-            <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-4 rounded-t-2xl flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <MessageCircle className="w-5 h-5" />
-                <span className="font-semibold">AirQ Assistant</span>
-              </div>
-              <button onClick={() => setShowChatbot(false)} className="text-white hover:text-gray-200">×</button>
-            </div>
-            <div className="p-4 h-full">
-              <div className="bg-blue-50 rounded-lg p-3 mb-4">
-                <p className="text-sm">Hi! I can help you understand air quality data and health recommendations.</p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {["What is PM2.5?", "Health tips", "AQI meaning"].map(q => (
-                  <button key={q} className="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-xs">
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        <button
-          onClick={() => setShowChatbot(!showChatbot)}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 z-40"
-        >
-          <MessageCircle className="w-6 h-6" />
-        </button>
       </div>
     </div>
   );

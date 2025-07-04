@@ -8,7 +8,7 @@ const Navigation = () => {
   const currentPage = pathname === '/' ? 'home' : pathname.slice(1);
 
   return (
-    <nav className="bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 shadow-lg sticky top-0 z-40">
+    <nav className="bg-gradient-to-r  from-blue-700 via-blue-500 to-green-600 shadow-lg sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
@@ -18,7 +18,7 @@ const Navigation = () => {
               className="w-10 h-10 rounded-xl"
             />
             <div>
-              <h1 className="text-2xl font-bold text-white font-serif tracking-wide">AIRA</h1>
+              <h1 className="text-2xl font-bold text-white font-sans tracking-wide">AIRA</h1>
               <p className="text-sm text-cyan-100 font-medium tracking-wider">Air Intelligence & Reality Assistant</p>
             </div>
           </div>

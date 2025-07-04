@@ -219,8 +219,7 @@ const Chatbot = () => {
             {chatMessages.length === 0 && (
               <div className="text-center text-gray-500 py-8">
                 <Wind className="w-12 h-12 mx-auto mb-3 text-teal-400" />
-                <p className="text-sm">Hi! I'm AIRA, your AI air quality assistant.</p>
-                <p className="text-xs mt-1">Ask me anything about air pollution, health impacts, or protection measures.</p>
+                
               </div>
             )}
             
@@ -312,7 +311,7 @@ const Chatbot = () => {
         <div className="relative">
           <button
             onClick={() => setChatOpen(true)}
-            className="bg-gradient-to-r from-blue-600 via-blue-500 to-green-400  text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 animate-pulse flex items-center justify-center"
+            className="bg-gradient-to-r from-blue-600 via-blue-500 to-green-600  text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 animate-pulse flex items-center justify-center"
           >
             
             <MessageCircle className="w-5 h-5" />
