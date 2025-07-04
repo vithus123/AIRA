@@ -1,22 +1,67 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Wind, Eye, Activity, Shield, Heart, Leaf, AlertTriangle, Clock, MessageCircle, 
   Bell, Users, TrendingUp, Navigation, Zap, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+// Import Firestore for live AQI
+import { db } from '../firebase';
+import { collection, query, orderBy, limit, onSnapshot } from '../firestore';
+
+
+
 
 // Mock context for demo purposes
 const AirDataContext = React.createContext();
 
 const AirDataProvider = ({ children }) => {
   const [airData, setAirData] = useState({
-    aqi: 156,
-    pm25: 65.2,
-    pm10: 89.1,
-    temperature: 28,
-    humidity: 78,
-    co: 2.3,
-    no2: 45.2,
-    o3: 78.5,
-    so2: 12.1
+    aqi: 0,
+    pm25: 0,
+    pm10: 0,
+    temperature: 0,
+    humidity: 0,
+    co: 0,
+    no2: 0,
+    o3: 0,
+    so2: 0
   });
+
+  useEffect(() => {
+    const API_TOKEN = 'e1213d2ed4a27670332784066ed57ba7a61d67c5';
+    const url = `https://api.waqi.info/feed/colombo/?token=${API_TOKEN}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        if (json.status === 'ok') {
+          const d = json.data;
+          const c = d.iaqi;
+          setAirData({
+            aqi: d.aqi ?? 0,
+            pm25: c.pm25?.v ?? 0,
+            pm10: c.pm10?.v ?? 0,
+            o3: c.o3?.v ?? 0,
+            no2: c.no2?.v ?? 0,
+            so2: c.so2?.v ?? 0,
+            co: c.co?.v ?? 0,
+            temperature: c.t?.v ?? 0,
+            humidity: c.h?.v ?? 0
+          });
+        }
+      })
+      .catch(() => {
+        // fallback to mock data if API fails
+        setAirData({
+          aqi: 156,
+          pm25: 65.2,
+          pm10: 89.1,
+          temperature: 28,
+          humidity: 78,
+          co: 2.3,
+          no2: 45.2,
+          o3: 78.5,
+          so2: 12.1
+        });
+      });
+  }, []);
 
   const getAQIColor = (aqi) => {
     if (aqi <= 50) return 'text-green-500';

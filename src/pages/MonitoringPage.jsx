@@ -10,24 +10,57 @@ const AirQualityDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [selectedPollutant, setSelectedPollutant] = useState('pm25');
   const [showChatbot, setShowChatbot] = useState(false);
+  const [airData, setAirData] = useState({
+    pm25: 0, pm10: 0, o3: 0, no2: 0, so2: 0, co: 0,
+    temperature: 0, humidity: 0, aqi: 0, location: "Colombo, Sri Lanka"
+  });
+  const [historicalData, setHistoricalData] = useState([]);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+useEffect(() => {
+  const API_TOKEN = 'e1213d2ed4a27670332784066ed57ba7a61d67c5';
+  const url = `https://api.waqi.info/feed/colombo/?token=${API_TOKEN}`;
 
-  // Mock real-time data
-  const airData = {
-    pm25: 45.2, pm10: 78.3, o3: 65, no2: 32, so2: 18, co: 1.2,
-    temperature: 28.5, humidity: 72, aqi: 85, location: "Colombo, Sri Lanka"
-  };
+  fetch(url)
+    .then(res => res.json())
+    .then(json => {
+      if (json.status === 'ok') {
+        const d = json.data;
+        const c = d.iaqi;
+        setAirData({
+          aqi: d.aqi ?? 0,
+          pm25: c.pm25?.v ?? 0,
+          pm10: c.pm10?.v ?? 0,
+          o3: c.o3?.v ?? 0,
+          no2: c.no2?.v ?? 0,
+          so2: c.so2?.v ?? 0,
+          co: c.co?.v ?? 0,
+          temperature: c.t?.v ?? 0,
+          humidity: c.h?.v ?? 0,
+          location: d.city?.name ?? 'Colombo, Sri Lanka'
+        });
+      }
+    })
+    .catch(() => {
+      // fallback to mock data if API fails
+      setAirData({
+        pm25: 45.2, pm10: 78.3, o3: 65, no2: 32, so2: 18, co: 1.2,
+        temperature: 28.5, humidity: 72, aqi: 85, location: "Colombo, Sri Lanka"
+      });
+    });
 
-  const historicalData = Array.from({length: 24}, (_, i) => ({
-    hour: `${23-i}:00`,
-    pm25: 45 + Math.random() * 20,
-    pm10: 78 + Math.random() * 15,
-    aqi: 85 + Math.random() * 30
+  // Mock history fallback
+  const mockHistory = Array.from({ length: 24 }, (_, i) => ({
+    hour: `${23 - i}:00`,
+    pm25: 50 + Math.random() * 10,
+    pm10: 60 + Math.random() * 15,
+    aqi: 80 + Math.random() * 20
   }));
+  setHistoricalData(mockHistory);
+}, []);
 
   const pollutantBreakdown = [
     {name: 'PM2.5', value: 35, color: '#3B82F6'},
