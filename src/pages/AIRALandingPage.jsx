@@ -4,7 +4,8 @@ import {
 } from 'lucide-react';
 import AuthSystem from './AuthSystem';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from '../firestore';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const AIRALandingPage = () => {
   // State for UI
@@ -95,7 +96,6 @@ const AIRALandingPage = () => {
       if (firebaseUser) {
         // Fetch user name from Firestore
         try {
-          const db = getFirestore();
           const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
           if (userDoc.exists()) {
             setUserName(userDoc.data().name || "");
@@ -199,8 +199,8 @@ const AIRALandingPage = () => {
                 <span className="text-white/90 font-medium">Breathe Smart, Live Better</span>
               </div>
               <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                Your AI-Powered
-                <span className="block bg-gradient-to-r from-green-300 to-emerald-400 bg-clip-text text-transparent">
+                Your AI & IoT Powered 
+                <span className="block bg-gradient-to-r from-green-400 to-blue-600 bg-clip-text text-transparent">
                   Air Guardian
                 </span>
               </h2>

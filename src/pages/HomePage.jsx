@@ -408,7 +408,7 @@ const HomePage = () => {
               </div>
               <div>
                 <h1 className="text-4xl font-bold">AIRA</h1>
-                <p className="text-blue-100">AI-Powered Air Quality Management</p>
+                <p className="text-blue-100">AI & IoT Powered Air Quality Management</p>
               </div>
             </div>
             

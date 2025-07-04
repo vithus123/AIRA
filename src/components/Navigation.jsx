@@ -19,7 +19,7 @@ const Navigation = () => {
             />
             <div>
               <h1 className="text-2xl font-bold text-white font-serif tracking-wide">AIRA</h1>
-              <p className="text-sm text-cyan-100 font-medium tracking-wider">Air Intelligence and Reality Assistant</p>
+              <p className="text-sm text-cyan-100 font-medium tracking-wider">Air Intelligence & Reality Assistant</p>
             </div>
           </div>
           <div className="flex space-x-1">
