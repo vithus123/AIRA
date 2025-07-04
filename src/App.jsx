@@ -10,6 +10,7 @@ import MonitoringPage from './pages/MonitoringPage';
 import ProfilePage from './pages/ProfilePage';
 import AIRALandingPage from './pages/AIRALandingPage';
 import AuthSystem from './pages/AuthSystem';
+import PersonalInfoPage from './pages/PersonalInfoPage';
 
 // Create context for air quality data
 const AirDataContext = React.createContext();
@@ -68,32 +69,20 @@ const App = () => {
   };
 
   return (
-    <AirDataContext.Provider value={{ airData, getAQIColor, getAQIStatus, chatOpen, setChatOpen, chatMessages, setChatMessages, newMessage, setNewMessage }}>
+    <AirDataContext.Provider value={{ airData, setAirData }}>
       <BrowserRouter>
-        <div className="min-h-screen bg-gray-50">
-          {/* Only show Navigation, Chatbot, and FloatingAQIWidget if user is logged in */}
-          {user && <Navigation />}
-          <main className="max-w-7xl mx-auto px-8 py-8">
-            <Routes>
-              {/* If not logged in, only show landing page */}
-              {!user ? (
-                <Route path="*" element={<AIRALandingPage />} />
-              ) : (
-                <>
-                  <Route path="/" element={<AIRALandingPage />} />
-                  <Route path="/landing" element={<AIRALandingPage />} />
-                  <Route path="/home" element={<HomePage />} />
-                  <Route path="/monitoring" element={<MonitoringPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/loginsignup" element={<AuthSystem />} />
-                </>
-              )}
-            </Routes>
-          </main>
-          {/* Only show these if user is logged in */}
-          {user && <Chatbot />}
-          {user && <FloatingAQIWidget />}
-        </div>
+        <Navigation user={user} />
+        <Routes>
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/monitoring" element={<MonitoringPage />} />
+          <Route path="/profile" element={<ProfilePage hideAQIWidget={true} />} />
+          <Route path="/personal-info" element={<PersonalInfoPageWrapper />} />
+          <Route path="/landing" element={<AIRALandingPage />} />
+          <Route path="/auth/*" element={<AuthSystem />} />
+        </Routes>
+        {/* Only show FloatingAQIWidget if not on profile page */}
+        {window.location.pathname !== '/profile' && <FloatingAQIWidget airData={airData} />}
+        <Chatbot open={chatOpen} setOpen={setChatOpen} messages={chatMessages} setMessages={setChatMessages} newMessage={newMessage} setNewMessage={setNewMessage} />
       </BrowserRouter>
     </AirDataContext.Provider>
   );
@@ -101,3 +90,15 @@ const App = () => {
 
 export default App;
 export { AirDataContext };
+
+// Wrapper to provide profile state to PersonalInfoPage
+function PersonalInfoPageWrapper() {
+  const [profile, setProfile] = useState({
+    fullName: 'Sarah Chen',
+    username: 'sarahc_breathe',
+    email: 'sarah.chen@email.com',
+    phone: '+94 77 123 4567',
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  return <PersonalInfoPage profile={profile} setProfile={setProfile} isEditing={isEditing} setIsEditing={setIsEditing} />;
+}

@@ -104,13 +104,13 @@ const FloatingAQIWidget = () => {
             </div>
             
             {/* Bottom accent line */}
-            <div className={`mt-4 h-2 rounded-full bg-gradient-to-r from-blue-400 via-sky-400 to-indigo-400 opacity-80 shadow-lg`}></div>
+            <div className={`mt-4 h-2 rounded-full bg-gradient-to-r  from-blue-600 via-blue-500 to-green-400 opacity-80 shadow-lg`}></div>
             
             {/* Additional decorative elements */}
             <div className="absolute top-3 right-3 w-3 h-3 bg-gradient-to-br from-blue-300 to-sky-300 rounded-full opacity-70 animate-pulse"></div>
             <div className="absolute bottom-3 left-3 w-2.5 h-2.5 bg-gradient-to-br from-sky-400 to-blue-400 rounded-full opacity-50 animate-pulse delay-700"></div>
             <div className="absolute top-5 left-5 w-1.5 h-1.5 bg-gradient-to-br from-indigo-400 to-blue-400 rounded-full opacity-60 animate-pulse delay-300"></div>
-            <div className="absolute bottom-5 right-5 w-2 h-2 bg-gradient-to-br from-blue-400 to-indigo-400 rounded-full opacity-40 animate-pulse delay-900"></div>
+            <div className="absolute bottom-5 right-5 w-2 h-2 bg-gradient-to-br from-blue-600 via-blue-500 to-green-400 rounded-full opacity-40 animate-pulse delay-900"></div>
           </div>
         </div>
       </div>
