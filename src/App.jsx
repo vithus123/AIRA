@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { Wind, Thermometer, Droplets, Eye, AlertTriangle, Shield, MessageCircle, X, Send, Home, BarChart3, User, Leaf, Heart, Activity, TrendingUp, MapPin, Clock, Info } from 'lucide-react';
 import Navigation from './components/Navigation';
 import Chatbot from './components/Chatbot';
 import FloatingAQIWidget from './components/FloatingAQIWidget';
@@ -29,7 +28,7 @@ const App = () => {
     { type: 'bot', message: 'Hello! I\'m here to help you with air pollution information for Colombo. How can I assist you today?' }
   ]);
   const [newMessage, setNewMessage] = useState('');
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined); // undefined = loading, null = not logged in, object = logged in
   const auth = getAuth();
 
   // Simulate real-time data updates
@@ -68,20 +67,45 @@ const App = () => {
     return 'Unhealthy';
   };
 
+  // Show loading while checking auth state
+  if (user === undefined) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <AirDataContext.Provider value={{ airData, setAirData }}>
       <BrowserRouter>
-        <Navigation user={user} />
+        {user && <Navigation user={user} />}
         <Routes>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/monitoring" element={<MonitoringPage />} />
-          <Route path="/profile" element={<ProfilePage hideAQIWidget={true} />} />
-          <Route path="/personal-info" element={<PersonalInfoPageWrapper />} />
+          {/* Public routes */}
           <Route path="/landing" element={<AIRALandingPage />} />
           <Route path="/auth/*" element={<AuthSystem />} />
+
+          {/* Protected routes */}
+          <Route
+            path="/home"
+            element={user ? <HomePage /> : <Navigate to="/auth" replace />}
+          />
+          <Route
+            path="/monitoring"
+            element={user ? <MonitoringPage /> : <Navigate to="/auth" replace />}
+          />
+          <Route
+            path="/profile"
+            element={user ? <ProfilePage hideAQIWidget={true} /> : <Navigate to="/auth" replace />}
+          />
+          <Route
+            path="/personal-info"
+            element={user ? <PersonalInfoPageWrapper /> : <Navigate to="/auth" replace />}
+          />
+          {/* Default route: redirect to landing or home based on auth */}
+          <Route
+            path="*"
+            element={<Navigate to={user ? "/home" : "/landing"} replace />}
+          />
         </Routes>
-        {/* Only show FloatingAQIWidget if not on profile page */}
-        {window.location.pathname !== '/profile' && <FloatingAQIWidget airData={airData} />}
+        {/* Only show FloatingAQIWidget if not on profile page and user is logged in */}
+        {user && window.location.pathname !== '/profile' && <FloatingAQIWidget airData={airData} />}
         <Chatbot open={chatOpen} setOpen={setChatOpen} messages={chatMessages} setMessages={setChatMessages} newMessage={newMessage} setNewMessage={setNewMessage} />
       </BrowserRouter>
     </AirDataContext.Provider>
